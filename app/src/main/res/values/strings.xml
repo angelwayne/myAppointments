@@ -11,7 +11,7 @@
     <string name="label_register">Registro</string>
     <string name="label_user_name">Nombre Completo</string>
     <string name="label_btn_register">Registrar</string>
-    <string name="label_go_to_login">Login</string>
+    <string name="label_go_to_login">Ya tienes una cuenta ?</string>
     <string name="label_message">Por favor compelta los datos</string>
 
     <string name="label_welcome">Bienvenido</string>
@@ -28,9 +28,16 @@
     <string name="AppointementType1">Consulta</string>
     <string name="AppointementType2">Analisis Clinicos</string>
     <string name="AppointementType3">Cirugia</string>
-    <string name="label_btn_next"> Siguiente</string>
+    <string name="label_btn_next">Siguiente</string>
     <string name="label_doctor">Doctor 👨‍⚕️</string>
     <string name="label_scheduleDate">📅 Fecha</string>
     <string name="label_btn_Confirm">Cormirmar Cita</string>
+
+    <string name="date_fromat">%1$d-%2$s-%3$s</string>
+
+    <string name="item_Apppointment_id">Cita medica %1$d</string>
+    <string name="item_Apppointment_date">El dia %1$s</string>
+    <string name="item_Apppointment_time">A las: %1$s</string>
+    <string name="my_appointements_tittle">Mi Citas Medicas</string>
 
 </resources>
