@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_create_appointment.*
 import kotlinx.android.synthetic.main.activity_menu.*
+import com.nextpageti.myappointments.PreferenceHelper.get
+import com.nextpageti.myappointments.PreferenceHelper.set
 
 class MenuActivity : AppCompatActivity() {
 
@@ -35,10 +37,14 @@ class MenuActivity : AppCompatActivity() {
     }
 
     private fun clearSessionPreferences(){
+        /*
         val preferences = getSharedPreferences("general", Context.MODE_PRIVATE)
         val editor = preferences.edit()
         editor.putBoolean("session",false)
         editor.apply()
+        */
+        val preferences = PreferenceHelper.defaultPrefs(this)
+        preferences["session"] = false
     }
 
 }
