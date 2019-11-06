@@ -1,14 +1,12 @@
-package com.nextpageti.myappointments
+package com.nextpageti.myappointments.ui
 
-import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import kotlinx.android.synthetic.main.activity_create_appointment.*
+import com.nextpageti.myappointments.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_menu.*
-import com.nextpageti.myappointments.PreferenceHelper.get
 import com.nextpageti.myappointments.PreferenceHelper.set
+import com.nextpageti.myappointments.R
 
 class MenuActivity : AppCompatActivity() {
 
@@ -17,19 +15,19 @@ class MenuActivity : AppCompatActivity() {
         setContentView(R.layout.activity_menu)
 
         btnCreateAppointment.setOnClickListener{
-            val intent = Intent (this,CreateAppointmentActivity::class.java)
+            val intent = Intent (this, CreateAppointmentActivity::class.java)
             startActivity(intent)
         }
 
         btnMyAppointments.setOnClickListener{
-            val intent = Intent (this,AppointmentsActivity::class.java)
+            val intent = Intent (this, AppointmentsActivity::class.java)
             startActivity(intent)
         }
 
         // Btn Close session
         btnLogOut.setOnClickListener {
             clearSessionPreferences()
-            val intent = Intent (this,MainActivity::class.java)
+            val intent = Intent (this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }

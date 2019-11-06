@@ -1,9 +1,10 @@
-package com.nextpageti.myappointments
+package com.nextpageti.myappointments.ui
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.nextpageti.myappointments.Model.Appointment
+import com.nextpageti.myappointments.R
 import kotlinx.android.synthetic.main.activity_appointments.*
 
 class AppointmentsActivity : AppCompatActivity() {

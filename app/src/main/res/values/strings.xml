@@ -28,6 +28,7 @@
     <string name="AppointementType1">Consulta</string>
     <string name="AppointementType2">Analisis Clinicos</string>
     <string name="AppointementType3">Cirugia</string>
+    <string name="validate_appointment_description">La descripcion es demasiado corta</string>
     <string name="label_btn_next">Siguiente</string>
     <string name="label_doctor">Doctor 👨‍⚕️</string>
     <string name="label_scheduleDate">📅 Fecha</string>
@@ -40,5 +41,14 @@
     <string name="item_Apppointment_time">A las: %1$s</string>
     <string name="my_appointements_tittle">Mi Citas Medicas</string>
     <string name="press_back_again">Presiona una vez mas para salir</string>
+    <string name="dialog_create_appointment_exit_title">Esta sseguro que deseas Salir ?</string>
+    <string name="dialog_create_appointment_exit_message">Si abandonas el resgitro los dtos ue has puesto se perderam!
+    </string>
+    <string name="dialog_create_appointment_exit_positive_btn">Si, salir</string>
+    <string name="dialog_create_appointment_exit_negative_btn">Continuar Registro</string>
+    <string name="label_schedule_time">Hora de la cita medica</string>
+    <string name="label_confirmed_appointment_data">Datos de la Cita</string>
+    <string name="validate_appointment_date">Debes seleccionar una fecha</string>
+    <string name="validate_appointment_time">Selecciona una hora</string>
 
 </resources>

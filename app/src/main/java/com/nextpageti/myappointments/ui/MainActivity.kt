@@ -1,15 +1,15 @@
-package com.nextpageti.myappointments
+package com.nextpageti.myappointments.ui
 
-import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.widget.Toast
+import com.nextpageti.myappointments.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_main.*
 import com.nextpageti.myappointments.PreferenceHelper.get
 import com.nextpageti.myappointments.PreferenceHelper.set
+import com.nextpageti.myappointments.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             tvGoToRegister.setOnClickListener{
                 Toast.makeText(this,getString(R.string.label_message),Toast.LENGTH_SHORT).show()
 
-                val intent = Intent(this,RegisterActivity::class.java)
+                val intent = Intent(this, RegisterActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         private fun goToMainActivity (){
-            val intent = Intent(this,MenuActivity::class.java)
+            val intent = Intent(this, MenuActivity::class.java)
             startActivity(intent)
             finish()
         }
