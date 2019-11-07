@@ -50,5 +50,6 @@
     <string name="label_confirmed_appointment_data">Datos de la Cita</string>
     <string name="validate_appointment_date">Debes seleccionar una fecha</string>
     <string name="validate_appointment_time">Selecciona una hora</string>
+    <string name="error_loading_doctors">Ocurrio un problema al cargar los medicos</string>
 
 </resources>

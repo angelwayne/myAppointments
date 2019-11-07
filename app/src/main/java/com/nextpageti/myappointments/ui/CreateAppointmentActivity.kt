@@ -6,9 +6,8 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.RadioButton
-import android.widget.Toast
+import android.widget.*
+import com.nextpageti.myappointments.Model.Doctor
 import com.nextpageti.myappointments.Model.Specialty
 import com.nextpageti.myappointments.R
 import com.nextpageti.myappointments.io.ApiService
@@ -17,9 +16,9 @@ import kotlinx.android.synthetic.main.card_view_step_one.*
 import kotlinx.android.synthetic.main.card_view_step_tree.*
 import kotlinx.android.synthetic.main.card_view_step_two.*
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import javax.security.auth.callback.Callback
 import kotlin.collections.ArrayList
 
 class CreateAppointmentActivity : AppCompatActivity() {
@@ -68,9 +67,10 @@ class CreateAppointmentActivity : AppCompatActivity() {
         }
 
         loadSpecialties()
+        listenSpecialtyChanges()
 
         val doctorOptions = arrayOf("Dcotor A","Docotor B","Doctor C")
-        sipinnerDoctor.adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,doctorOptions)
+        sipinnerDoctor.adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,doctorOptions) as SpinnerAdapter?
     }
 
     private fun loadSpecialties ()
@@ -88,16 +88,44 @@ class CreateAppointmentActivity : AppCompatActivity() {
                 if(response.isSuccessful)
                 {
                     val specialties = response.body()
-                    val specialtyOptions = ArrayList<String>()
-
-                    specialties?.forEach {
-                        specialtyOptions.add(it.name)
-                    }
-                    spinnerSpecialty.adapter = ArrayAdapter<String>(this@CreateAppointmentActivity,android.R.layout.simple_list_item_1,specialtyOptions)
+                    spinnerSpecialty.adapter = ArrayAdapter<Specialty>(this@CreateAppointmentActivity,android.R.layout.simple_list_item_1,specialties)
                 }
             }
         })
     }
+
+    private fun listenSpecialtyChanges() {
+        spinnerSpecialty.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(adapter: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val specialty  = adapter?.getItemAtPosition(position) as Specialty
+                loadDocors(specialty.id)
+            }
+
+        }
+    }
+
+    private fun loadDocors(specialtyId : Int){
+        var call = apiService.getDoctors(specialtyId)
+        call.enqueue(object : Callback<ArrayList<Doctor>>{
+            override fun onFailure(call: Call<ArrayList<Doctor>>, t: Throwable) {
+                Toast.makeText(this@CreateAppointmentActivity,R.string.error_loading_doctors,Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CreateAppointmentActivity,"Esto paso "+t,Toast.LENGTH_SHORT).show()
+            }
+            override fun onResponse(call: Call<ArrayList<Doctor>>, response: Response<ArrayList<Doctor>>) {
+                if(response.isSuccessful)
+                {
+                    val doctors = response.body()
+                    sipinnerDoctor.adapter = ArrayAdapter<Doctor>(this@CreateAppointmentActivity,android.R.layout.simple_list_item_1,doctors)
+                }
+            }
+
+        })
+    }
+
     private fun showAppointmentDataToconfirm () {
         tvConfirmDesc.text= etDescription.text.toString()
         tvConfirmSpecialty.text = spinnerSpecialty.selectedItem.toString()
