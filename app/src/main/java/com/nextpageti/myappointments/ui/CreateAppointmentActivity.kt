@@ -5,9 +5,12 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import com.nextpageti.myappointments.Model.Doctor
+import com.nextpageti.myappointments.Model.Schedule
 import com.nextpageti.myappointments.Model.Specialty
 import com.nextpageti.myappointments.R
 import com.nextpageti.myappointments.io.ApiService
@@ -68,18 +71,15 @@ class CreateAppointmentActivity : AppCompatActivity() {
 
         loadSpecialties()
         listenSpecialtyChanges()
-
-        val doctorOptions = arrayOf("Dcotor A","Docotor B","Doctor C")
-        sipinnerDoctor.adapter = ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,doctorOptions) as SpinnerAdapter?
+        listenDoctorAndDateChanges()
     }
 
     private fun loadSpecialties ()
     {
-         val call = apiService.getSpecialties()
-
+        val call = apiService.getSpecialties()
         call.enqueue(object : retrofit2.Callback<ArrayList<Specialty>> {
             override fun onFailure(call: Call<ArrayList<Specialty>>, t: Throwable) {
-                Toast.makeText(this@CreateAppointmentActivity,"currio un problema al cargar las especialidades",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CreateAppointmentActivity,"Ocurrio un problema al cargar las especialidades",Toast.LENGTH_SHORT).show()
                 Toast.makeText(this@CreateAppointmentActivity,"Esto paso "+t,Toast.LENGTH_SHORT).show()
                 finish()
             }
@@ -124,6 +124,54 @@ class CreateAppointmentActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    private fun listenDoctorAndDateChanges () {
+        //doctor changes
+        sipinnerDoctor.onItemSelectedListener = object  : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+               val doctor = parent?.getItemAtPosition(position) as Doctor
+                loadHours(doctor.id, edtScheduleDate.text.toString())
+            }
+
+        }
+
+        // schedule date changes
+        edtScheduleDate.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val doctor = sipinnerDoctor.selectedItem as Doctor
+                loadHours(doctor.id,edtScheduleDate.text.toString())
+            }
+
+        })
+    }
+
+    private fun loadHours (doctorId : Int, scheduleDate: String) {
+        val call = apiService.getHours(doctorId,scheduleDate)
+        call.enqueue(object : Callback<Schedule> {
+            override fun onFailure(call: Call<Schedule>, t: Throwable) {
+                Toast.makeText(this@CreateAppointmentActivity,"No se han podido cargar las horas",Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onResponse(call: Call<Schedule>, response: Response<Schedule>) {
+                if(response.isSuccessful){
+                    val schedule = response.body()
+                    Toast.makeText(this@CreateAppointmentActivity,"morning: ${schedule?.morning?.size}, afternoon: ${schedule?.afternoon?.size}",Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        })
+        //Toast.makeText(this,"Id del medico $doctorId y fecha $scheduleDate",Toast.LENGTH_SHORT).show()
     }
 
     private fun showAppointmentDataToconfirm () {
