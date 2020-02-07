@@ -51,5 +51,7 @@
     <string name="validate_appointment_date">Debes seleccionar una fecha</string>
     <string name="validate_appointment_time">Selecciona una hora</string>
     <string name="error_loading_doctors">Ocurrio un problema al cargar los medicos</string>
+    <string name="label_select_doctor_date">Seleccione un medico y una fecha para ver sus horas disponibles</string>
+    <string name="label_hours_not_abilable">No se han encontrado horas para el medico y fecha seleccionados</string>
 
 </resources>
