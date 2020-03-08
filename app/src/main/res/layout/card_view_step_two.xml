@@ -88,10 +88,14 @@
                         android:layout_marginBottom="8dp">
 
                     <RadioButton
+                            android:visibility="gone"
+                            tools:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="8:00 Am"/>
                     <RadioButton
+                            android:visibility="gone"
+                            tools:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="9:00 Am"/>
@@ -108,10 +112,14 @@
                         android:layout_marginBottom="8dp">
 
                     <RadioButton
+                            android:visibility="gone"
+                            tools:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="8:00 Am"/>
                     <RadioButton
+                            android:visibility="gone"
+                            tools:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="9:00 Am"/>

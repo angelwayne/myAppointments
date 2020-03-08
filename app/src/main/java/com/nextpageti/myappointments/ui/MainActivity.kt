@@ -10,8 +10,19 @@ import kotlinx.android.synthetic.main.activity_main.*
 import com.nextpageti.myappointments.PreferenceHelper.get
 import com.nextpageti.myappointments.PreferenceHelper.set
 import com.nextpageti.myappointments.R
+import com.nextpageti.myappointments.io.ApiService
+import com.nextpageti.myappointments.io.response.loginResponse
+import com.nextpageti.myappointments.util.toast
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 class MainActivity : AppCompatActivity() {
+
+    private val apiService : ApiService by lazy{
+        ApiService.create()
+    }
+
 
     private val snackBar by lazy {
         Snackbar.make(mainLayout, R.string.press_back_again, Snackbar.LENGTH_SHORT)
@@ -28,14 +39,14 @@ class MainActivity : AppCompatActivity() {
             */
             val preferences = PreferenceHelper.defaultPrefs(this)
 
-            if(preferences["session",false])
+            if(preferences["jwt",""].contains("."))
                 goToMainActivity()
 
             // Btn Ingresar
             btnLogin.setOnClickListener {
-                // Validar
-                createSessionPreferences()
-                goToMainActivity()
+                // Validate
+                performLogin()
+
             }
 
             // TextView Registerw
@@ -47,7 +58,36 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        private fun createSessionPreferences(){
+        private fun performLogin(){
+            val call = apiService.postLogin(edtEmail.text.toString(), edtPassword.text.toString())
+            call.enqueue(object: retrofit2.Callback<loginResponse>{
+                override fun onFailure(call: Call<loginResponse>, t: Throwable) {
+                    toast(t.localizedMessage)
+                }
+
+                override fun onResponse(call: Call<loginResponse>, response: Response<loginResponse>) {
+                    if(response.isSuccessful){
+                        val loginResponse = response.body()
+                        if (loginResponse == null){
+                            // Toast
+                            toast("Se obtuvo una respuesta inesperada del servidor 1.1")
+                            return
+                        }
+                        if(loginResponse.success){
+                            createSessionPreferences(loginResponse.jwt)
+                            goToMainActivity()
+                        }else {
+                            toast("Las credenciales son incorrectas")
+                        }
+                    }else { // error 404, etc
+                        toast("Error interno del servidor")
+                    }
+                }
+
+            })
+        }
+
+        private fun createSessionPreferences(jwt : String){
             /* PreferenceManager.getDefaultSharedPreferences(Context.MODE_PRIVATE)
              val preferences = getSharedPreferences("general", Context.MODE_PRIVATE)
              val editor = preferences.edit()
@@ -55,7 +95,7 @@ class MainActivity : AppCompatActivity() {
              editor.apply()
              */
             val preferences = PreferenceHelper.defaultPrefs(this)
-            preferences["session"]=true
+            preferences["jwt"]=jwt
         }
 
         private fun goToMainActivity (){
